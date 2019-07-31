@@ -31,6 +31,7 @@ function unset_vars() {
 
 function set_vars(){
   source info.sh
+  source $BASEDIR/sgx.sh
 
   # Let's set the variables that are unset
 

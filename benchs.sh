@@ -8,9 +8,13 @@ function Dhrystone() { dirs=($( ls -d */ )); walk "${dirs[@]}" ; }
 function DOE_ProxyApps_C() { dirs=($( ls -d */ )); walk "${dirs[@]}" ; }
 function McGill() { dirs=($( ls -d */ )); walk "${dirs[@]}" ; }
 function MiBench() { dirs=($( ls -d */ )); walk "${dirs[@]}" ; }
+function MiBench-Full() { dirs=($( ls -d */ )); walk "${dirs[@]}" ; }
+function MiBench-Selective() { dirs=($( ls -d */ )); walk "${dirs[@]}" ; }
 function Misc() { dirs=($( ls -d */ )); walk "${dirs[@]}" ; }
 function Shootout() { dirs=($( ls -d */ )); walk "${dirs[@]}" ; }
 function Stanford() { dirs=($( ls -d */ )); walk "${dirs[@]}" ; }
+function Stanford-Full() { dirs=($( ls -d */ )); walk "${dirs[@]}" ; }
+function Stanford-Selective() { dirs=($( ls -d */ )); walk "${dirs[@]}" ; }
 function Ptrdist() { dirs=($( ls -d */ )); walk "${dirs[@]}" ; }
 function Trimaran() { dirs=($( ls -d */ )); walk "${dirs[@]}" ; }
 function TSVC() { dirs=($( ls -d */ )); walk "${dirs[@]}" ; }
@@ -21,6 +25,11 @@ function MallocBench() { dirs=($( ls -d */ )); walk "${dirs[@]}" ; }
 function McCat() { dirs=($( ls -d */ )); walk "${dirs[@]}" ; }
 function Olden() { dirs=($( ls -d */ )); walk "${dirs[@]}" ; }
 function Prolangs-C() { dirs=($( ls -d */ )); walk "${dirs[@]}" ; }
+function Custom() { dirs=($( ls -d */ )); walk "${dirs[@]}" ; }
+function SGXBench() { dirs=($( ls -d */ )); walk "${dirs[@]}" ; }
+function SGXBench-Selective() { dirs=($( ls -d */ )); walk "${dirs[@]}" ; }
+function SGXBench-Full() { dirs=($( ls -d */ )); walk "${dirs[@]}" ; }
+
 
 function Fhourstones() { walk "." ; }
 function Fhourstones_31() { walk "." ; }
@@ -81,10 +90,12 @@ function cpu2006(){
   walk "${dirs[@]}"
 }
 
-benchs=( "ASC_Sequoia" "BenchmarkGame" "BitBench" "CoyoteBench" "DOE_ProxyApps_C" 
-  "Dhrystone" "McGill" "MiBench" "Misc"  "Shootout" "Stanford" "Fhourstones" 
-  "Linpack" "mediabench" "ASCI_Purple" "Fhourstones_31" "PolyBench"
-  "SciMark2-C" "sim" "mafft" "tramp3d-v4" "llubenchmark" "nbench" "Ptrdist"
-  "Trimaran" "TSVC" "PAQ8p" "NPB-serial" "VersaBench" "FreeBench" "cBench"
-  "MallocBench" "McCat" "Olden" "Prolangs-C" "cpu2006")
+benchs=( "Stanford-Full")
+
+#benchs=( "ASC_Sequoia" "BenchmarkGame" "BitBench" "CoyoteBench" "DOE_ProxyApps_C" 
+#  "Dhrystone" "McGill" "MiBench" "Misc"  "Shootout" "Stanford" "Fhourstones" 
+# "Linpack" "mediabench" "ASCI_Purple" "Fhourstones_31" "PolyBench"
+#  "SciMark2-C" "sim" "mafft" "tramp3d-v4" "llubenchmark" "nbench" "Ptrdist"
+#  "Trimaran" "TSVC" "PAQ8p" "NPB-serial" "VersaBench" "FreeBench" "cBench"
+#  "MallocBench" "McCat" "Olden" "Prolangs-C" "cpu2006")
 

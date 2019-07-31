@@ -4,13 +4,13 @@ function execute() {
   
   exe=$exe_name ;
 
-  if [[ -n $INSTRUMENT && $INSTRUMENT -eq 1 ]]; then
-    exe=INS_$exe_name
-  fi
+  # if [[ -n $INSTRUMENT && $INSTRUMENT -eq 1 ]]; then
+  #   exe=INS_$exe_name
+  # fi
   
-  if [[ -n $SANITIZE && $SANITIZE -eq 1 ]]; then
-    exe=SAN_$exe_name
-  fi
+  # if [[ -n $SANITIZE && $SANITIZE -eq 1 ]]; then
+  #   exe=SAN_$exe_name
+  # fi
   
   if [[ $(pwd) =~ "cBench" ]]; then
     for i in $(seq 1 $CBENCH); do

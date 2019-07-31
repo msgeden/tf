@@ -9,7 +9,7 @@
 [[ -n $EXEC ]] || EXEC=1
 
 # Compile
-[[ -n $COMPILE ]] || COMPILE=1
+[[ -n $COMPILE ]] || COMPILE=0
 
 # Instrument
 [[ -n $INSTRUMENT ]] || INSTRUMENT=0
@@ -63,7 +63,8 @@ fi
 # -- # -- # -- # -- # -- # -- # -- # -- # -- # -- # -- # -- # -- # -- # -- # -- 
 
 # LLVM_PATH  => The place where I have all the LLVM tools
-LLVM_PATH="$HOME/Programs/llvm61/build/bin"
+LLVM_PATH="$HOME/LLVM/6.0.0/build/bin"
+#LLVM_PATH="/usr/bin"
 
 [[ -d "${LLVM_PATH}" ]] || {
 	echo "One must define LLVM_PATH before running tf"
@@ -155,6 +156,7 @@ echo "PIN is set to $PIN"
 echo "EXEC is set to $EXEC"
 echo "COMPILE is set to $COMPILE"
 echo "INSTRUMENT is set to $INSTRUMENT"
+echo "ASAN is set to $ASAN"
 echo "SSA is set to $SSA"
 echo "suffix is set to $suffix"
 echo "BASEDIR is set to $BASEDIR"
