@@ -8,16 +8,22 @@ function cleanup() {
   rm -f *.bc
   rm -f *.rbc
   rm -f *.ibc
+  rm -f *.ebc
+  rm -f *.tbc
   rm -f *.o
+  rm -f vi_output.log
 }
 
 function cleanup_all() {
   rm -f *.bc
   rm -f *.rbc 
   rm -f *.ibc
+  rm -f *.ebc
+  rm -f *.tbc
   rm -f *.o
   rm -f *.exe
   rm -f *.txt
+  rm -f vi_output.log
 }
 
 function unset_vars() {
@@ -61,6 +67,8 @@ function set_vars(){
   fi
 
   lnk_name="$bench_name.rbc"
+  preinlined_name="$bench_name.ebc"
+  postinlined_name="$bench_name.tbc"
   prf_name="$bench_name.ibc"
   obj_name="$bench_name.o"
   exe_name="$bench_name.exe"

@@ -90,7 +90,7 @@ function cpu2006(){
   walk "${dirs[@]}"
 }
 
-benchs=( "Stanford-Full")
+#benchs=( "Stanford-Selective")
 
 #benchs=( "ASC_Sequoia" "BenchmarkGame" "BitBench" "CoyoteBench" "DOE_ProxyApps_C" 
 #  "Dhrystone" "McGill" "MiBench" "Misc"  "Shootout" "Stanford" "Fhourstones" 
