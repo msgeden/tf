@@ -11,7 +11,10 @@ function cleanup() {
   rm -f *.ebc
   rm -f *.tbc
   rm -f *.o
-  rm -f vi_output.log
+  rm -f *.tsv
+  rm -f *.log
+  rm -f vi_output_ns.log  
+  rm -f vi_output_ns.log
 }
 
 function cleanup_all() {
@@ -23,7 +26,10 @@ function cleanup_all() {
   rm -f *.o
   rm -f *.exe
   rm -f *.txt
+  rm -f *.tsv
+  rm -f *.log
   rm -f vi_output.log
+  rm -f vi_output_ns.log
 }
 
 function unset_vars() {

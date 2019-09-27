@@ -17,20 +17,6 @@ function compile() {
 	$LLVM_PATH/$COMPILER -lm $obj_name -o INS_$exe_name ;
   
   elif [[ -n $SGX && $SGX -eq 1 ]]; then
-  	echo "SGX:$SGX"
-  	echo "JOBS:$JOBS"
-  	echo "LLVM_PATH:$LLVM_PATH"
-  	echo "COMPILER:$COMPILER"
-  	echo "COMPILE_FLAGS:$APP_C_COMPILE_FLAGS"
-  	echo "LINK_FLAGS:$APP_LINK_FLAGS"
-
-    echo "lnk_name:$lnk_name"
-    echo "prf_name:$prf_name"
-    echo "obj_name:$obj_name"
-    echo "exe_name:$exe_name"
-    echo "inlined_name:$inlined_name"
-   
-   
     app_source_files=("${app_c_source_files[@]}" "${app_cpp_source_files[@]}")
     echo "app-source-files:$app_source_files"
 
@@ -80,8 +66,10 @@ function compile() {
     # optimizations  	
     $LLVM_PATH/opt -S -load $PASS_PATH -${PASS} $lnk_name -o $prf_name
     # Compile our instrumented file, in IR format, to x86:
-    $LLVM_PATH/llc -filetype=obj $prf_name -o $obj_name ;
-	# Compile everything now, producing a final executable file:
+    $LLVM_PATH/llc -filetype=obj $prf_name -o $obj_name ;	
+    
+    # Compile everything now, producing a final executable file:
+    echo "  $LLVM_PATH/$COMPILER -lm $obj_name -o $exe_name $App_Link_Flags"
     $LLVM_PATH/$COMPILER -lm $obj_name -o $exe_name $App_Link_Flags;
 
     #Since LD_LIBRARY_PATH does not trick for applicatoins to find for enclave.{signed}.so files, we create links for those libraries which include trusted functions to be instrumented
@@ -89,11 +77,16 @@ function compile() {
     ln -s $SGX_User_Libs/$Signed_Enclave_File $Signed_Enclave_File
 
   else
+
+    echo "parallel --tty --jobs=${JOBS} $LLVM_PATH/$COMPILER $COMPILE_FLAGS $OFLAGS\
+      -Xclang -disable-O0-optnone \
+      -S -c -emit-llvm {} -o {.}.bc ::: "${source_files[@]}""
     # source_files is the variable with all the files we're gonna compile
-    parallel --tty --jobs=${JOBS} $LLVM_PATH/$COMPILER $COMPILE_FLAGS \
+    parallel --tty --jobs=${JOBS} $LLVM_PATH/$COMPILER $COMPILE_FLAGS $OFLAGS\
       -Xclang -disable-O0-optnone \
       -S -c -emit-llvm {} -o {.}.bc ::: "${source_files[@]}" 
-    
+
+    # source_files is the variable with all the files we're gonna compile
     parallel --tty --jobs=${JOBS} $LLVM_PATH/opt -S {.}.bc -o {.}.rbc ::: "${source_files[@]}"
   
     #Generate all the bcs into a big bc:

@@ -1,9 +1,9 @@
 ######## SGX SDK Settings ########
 SGX_SDK="/opt/intel/sgxsdk"
-SGX_MODE=HW
+SGX_MODE=SIM
 SGX_ARCH=x64
-SGX_DEBUG=1
-SGX_PRERELEASE=0
+SGX_DEBUG=0
+SGX_PRERELEASE=1
 
 if [ $SGX_ARCH == x86 ]; then
 	SGX_COMMON_CFLAGS="-m32"
@@ -20,7 +20,7 @@ fi
 if [ $SGX_DEBUG == 1 ]; then
     SGX_COMMON_CFLAGS="$SGX_COMMON_CFLAGS -O0 -g"
 else
-	SGX_COMMON_CFLAGS="$SGX_COMMON_CFLAGS -O2"
+	SGX_COMMON_CFLAGS="$SGX_COMMON_CFLAGS -O0 -g"
 fi
 
 ######## App Settings ########

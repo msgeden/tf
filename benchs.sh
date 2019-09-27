@@ -12,6 +12,8 @@ function MiBench-Full() { dirs=($( ls -d */ )); walk "${dirs[@]}" ; }
 function MiBench-Selective() { dirs=($( ls -d */ )); walk "${dirs[@]}" ; }
 function Misc() { dirs=($( ls -d */ )); walk "${dirs[@]}" ; }
 function Shootout() { dirs=($( ls -d */ )); walk "${dirs[@]}" ; }
+function Shootout-Full() { dirs=($( ls -d */ )); walk "${dirs[@]}" ; }
+function Shootout-Selective() { dirs=($( ls -d */ )); walk "${dirs[@]}" ; }
 function Stanford() { dirs=($( ls -d */ )); walk "${dirs[@]}" ; }
 function Stanford-Full() { dirs=($( ls -d */ )); walk "${dirs[@]}" ; }
 function Stanford-Selective() { dirs=($( ls -d */ )); walk "${dirs[@]}" ; }
@@ -24,6 +26,9 @@ function FreeBench() { dirs=($( ls -d */ )); walk "${dirs[@]}" ; }
 function MallocBench() { dirs=($( ls -d */ )); walk "${dirs[@]}" ; }
 function McCat() { dirs=($( ls -d */ )); walk "${dirs[@]}" ; }
 function Olden() { dirs=($( ls -d */ )); walk "${dirs[@]}" ; }
+function Olden-Full() { dirs=($( ls -d */ )); walk "${dirs[@]}" ; }
+function Olden-Selective() { dirs=($( ls -d */ )); walk "${dirs[@]}" ; }
+
 function Prolangs-C() { dirs=($( ls -d */ )); walk "${dirs[@]}" ; }
 function Custom() { dirs=($( ls -d */ )); walk "${dirs[@]}" ; }
 function SGXBench() { dirs=($( ls -d */ )); walk "${dirs[@]}" ; }
@@ -65,6 +70,42 @@ function PolyBench(){
 }
 
 function cBench(){
+  dirs=("security_rijndael_d/src" "automotive_susan_c/src"
+        "security_rijndael_e/src" "consumer_jpeg_c/src" "consumer_lame/src"
+        "bzip2e/src" "telecom_adpcm_d/src" "bzip2d/src"
+        "network_dijkstra/src" "office_stringsearch1/src"
+        "consumer_tiffdither/src" "automotive_qsort1/src" 
+        "consumer_jpeg_d/src" "automotive_susan_e/src" 
+        "automotive_bitcount/src" "security_blowfish_e/src" "consumer_tiff2bw/src"
+        "telecom_CRC32/src" "security_sha/src" "consumer_tiffmedian/src"
+        "automotive_susan_s/src" "network_patricia/src" "telecom_adpcm_c/src"
+        "consumer_tiff2rgba/src" "security_blowfish_d/src")
+      
+  cant=("consumer_mad/src" "office_ispell/src" "office_ghostscript/src" "office_rsynth/src"
+  "security_pgp_d/src" "security_pgp_e/src" "telecom_gsm/src")
+  
+  walk "${dirs[@]}"
+}
+
+function cBench-Selective(){
+  dirs=("security_rijndael_d/src" "automotive_susan_c/src"
+        "security_rijndael_e/src" "consumer_jpeg_c/src" "consumer_lame/src"
+        "bzip2e/src" "telecom_adpcm_d/src" "bzip2d/src"
+        "network_dijkstra/src" "office_stringsearch1/src"
+        "consumer_tiffdither/src" "automotive_qsort1/src" 
+        "consumer_jpeg_d/src" "automotive_susan_e/src" 
+        "automotive_bitcount/src" "security_blowfish_e/src" "consumer_tiff2bw/src"
+        "telecom_CRC32/src" "security_sha/src" "consumer_tiffmedian/src"
+        "automotive_susan_s/src" "network_patricia/src" "telecom_adpcm_c/src"
+        "consumer_tiff2rgba/src" "security_blowfish_d/src")
+      
+  cant=("consumer_mad/src" "office_ispell/src" "office_ghostscript/src" "office_rsynth/src"
+  "security_pgp_d/src" "security_pgp_e/src" "telecom_gsm/src")
+  
+  walk "${dirs[@]}"
+}
+
+function cBench-Full(){
   dirs=("security_rijndael_d/src" "automotive_susan_c/src"
         "security_rijndael_e/src" "consumer_jpeg_c/src" "consumer_lame/src"
         "bzip2e/src" "telecom_adpcm_d/src" "bzip2d/src"
