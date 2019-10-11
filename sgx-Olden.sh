@@ -1,9 +1,9 @@
 ######## SGX SDK Settings ########
 SGX_SDK="/opt/intel/sgxsdk"
-SGX_MODE=HW
+SGX_MODE=SIM
 SGX_ARCH=x64
-SGX_DEBUG=1
-SGX_PRERELEASE=0
+SGX_DEBUG=0
+SGX_PRERELEASE=1
 
 if [ $SGX_ARCH == x86 ]; then
 	SGX_COMMON_CFLAGS="-m32"
@@ -20,7 +20,7 @@ fi
 if [ $SGX_DEBUG == 1 ]; then
     SGX_COMMON_CFLAGS="$SGX_COMMON_CFLAGS -O0 -g"
 else
-	SGX_COMMON_CFLAGS="$SGX_COMMON_CFLAGS -O2"
+	SGX_COMMON_CFLAGS="$SGX_COMMON_CFLAGS -O0 -g"
 fi
 
 ######## App Settings ########
@@ -32,7 +32,8 @@ fi
 
 App_Include_Paths=" -IInclude -IApp -I$SGX_SDK/include"
 
-App_C_Flags="$SGX_COMMON_CFLAGS -fPIC -Wno-attributes $App_Include_Paths"
+#App_C_Flags="$SGX_COMMON_CFLAGS -fPIC -Wno-attributes $App_Include_Paths"
+App_C_Flags="$SGX_COMMON_CFLAGS -fPIC -Wno-attributes $App_Include_Paths -DTORONTO"
 
 # Three configuration modes - Debug, prerelease, release
 #   Debug - Macro DEBUG enabled.
@@ -40,20 +41,21 @@ App_C_Flags="$SGX_COMMON_CFLAGS -fPIC -Wno-attributes $App_Include_Paths"
 #   Release - Macro NDEBUG enabled.
 if [ $SGX_DEBUG == 1 ]; then
 	App_C_Flags="$App_C_Flags -DDEBUG -UNDEBUG -UEDEBUG"
-elif [ $SGX_PRERELEASE == 1 ]; then
+elif [ $SGX_PRERELEASE == 1 ]; then	
 	App_C_Flags="$App_C_Flags -DNDEBUG -DEDEBUG -UDEBUG"
-else
+else	
 	App_C_Flags="$App_C_Flags -DNDEBUG -UEDEBUG -UDEBUG"
 fi
 
-App_Cpp_Flags="$App_C_Flags -std=c++11"
-App_Link_Flags="-L$SGX_LIBRARY_PATH -l$Urts_Library_Name -lsgx_uprotected_fs -lpthread" 
+App_Cpp_Flags="$App_C_Flags -std=c++11 -DTORONTO"
+App_Link_Flags="$SGX_COMMON_CFLAGS -L$SGX_LIBRARY_PATH -l$Urts_Library_Name -lsgx_uprotected_fs -lpthread" 
 
 if [ $SGX_MODE != HW ]; then
 	App_Link_Flags="$App_Link_Flags -lsgx_uae_service_sim"
 else
 	App_Link_Flags="$App_Link_Flags -lsgx_uae_service"
 fi
+
 
 ######## Enclave Settings ########
 if [ $SGX_MODE != HW ]; then

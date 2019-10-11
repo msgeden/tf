@@ -20,12 +20,18 @@ function compile() {
     app_source_files=("${app_c_source_files[@]}" "${app_cpp_source_files[@]}")
     echo "app-source-files:$app_source_files"
 
-	if [ ${#app_c_source_files[@]} != 0 ]; then
-		echo "parallel --tty --jobs=${JOBS} $LLVM_PATH/$COMPILER $App_C_Flags \
+	  if [ ${#app_c_source_files[@]} != 0 ]; then
+		  echo "parallel --tty --jobs=${JOBS} $LLVM_PATH/$COMPILER++ $App_C_Flags \
       -Xclang -disable-O0-optnone \
       -S -c -emit-llvm {} -o {.}.bc ::: "${app_c_source_files[@]}""
-  
-	    parallel --tty --jobs=${JOBS} $LLVM_PATH/$COMPILER $App_C_Flags \
+
+      
+      #parallel --tty --jobs=${JOBS} $LLVM_PATH/$COMPILER $App_C_Flags \
+      #  -Xclang -disable-O0-optnone \
+      #  -S -c -emit-llvm {} -o {.}.bc ::: "${app_c_source_files[@]}" 
+
+      #despite c code, uses clang++ because SGX requires c++ compiler
+      parallel --tty --jobs=${JOBS} $LLVM_PATH/$COMPILER++ $App_C_Flags \
 	      -Xclang -disable-O0-optnone \
 	      -S -c -emit-llvm {} -o {.}.bc ::: "${app_c_source_files[@]}" 
     
@@ -43,6 +49,7 @@ function compile() {
     
     fi
   
+    echo "parallel --tty --jobs=${JOBS} $LLVM_PATH/opt -S {.}.bc -o {.}.rbc ::: "${app_source_files[@]}""
    	parallel --tty --jobs=${JOBS} $LLVM_PATH/opt -S {.}.bc -o {.}.rbc ::: "${app_source_files[@]}"
 
 
@@ -55,22 +62,26 @@ function compile() {
       sed -i 's/attributes #0 = { noinline/attributes #0 = { /g' $preinlined_name
 
       $LLVM_PATH/opt -S -inline $preinlined_name -o $postinlined_name
-      $LLVM_PATH/llvm-link -S $SGX_User_Libs/$App_Lib $postinlined_name -o $lnk_name
+      $LLVM_PATH/llvm-link -S $SGX_User_Libs/$App_Lib $postinlined_name -o $lnk_name 
 
     else
       #Generate all the bcs into a big bc:
-      $LLVM_PATH/llvm-link -S $SGX_User_Libs/$App_Lib *.rbc -o $lnk_name
+      echo "$LLVM_PATH/llvm-link -S $SGX_User_Libs/$App_Lib *.rbc -o $lnk_name"
+      $LLVM_PATH/llvm-link -S $SGX_User_Libs/$App_Lib *.rbc -o $lnk_name 
     fi
   	
 
     # optimizations  	
+    echo "$LLVM_PATH/opt -S -load $PASS_PATH -${PASS} $lnk_name -o $prf_name"
     $LLVM_PATH/opt -S -load $PASS_PATH -${PASS} $lnk_name -o $prf_name
     # Compile our instrumented file, in IR format, to x86:
+    echo "$LLVM_PATH/llc -filetype=obj $prf_name -o $obj_name ; "
     $LLVM_PATH/llc -filetype=obj $prf_name -o $obj_name ;	
     
     # Compile everything now, producing a final executable file:
-    echo "  $LLVM_PATH/$COMPILER -lm $obj_name -o $exe_name $App_Link_Flags"
-    $LLVM_PATH/$COMPILER -lm $obj_name -o $exe_name $App_Link_Flags;
+    echo "  $LLVM_PATH/$COMPILER++ -lm $obj_name -o $exe_name $App_Link_Flags"
+    $LLVM_PATH/$COMPILER++ -lm $obj_name -o $exe_name $App_Link_Flags;
+    #$g++ -lm $obj_name -o $exe_name $App_Link_Flags;
 
     #Since LD_LIBRARY_PATH does not trick for applicatoins to find for enclave.{signed}.so files, we create links for those libraries which include trusted functions to be instrumented
     ln -s $SGX_User_Libs/$Enclave_File $Enclave_File
