@@ -22,7 +22,7 @@ function compile() {
       -Xclang -disable-O0-optnone \
       -S -c -emit-llvm {} -o {.}.bc ::: "${app_c_source_files[@]}""
   
-	    parallel --tty --jobs=${JOBS} $LLVM_PATH/$COMPILER++ $App_C_Flags \
+	    parallel --tty --jobs=${JOBS} $LLVM_PATH/$COMPILER $App_C_Flags \
 	      -Xclang -disable-O0-optnone \
 	      -S -c -emit-llvm {} -o {.}.bc ::: "${app_c_source_files[@]}" 
     

@@ -84,8 +84,9 @@ function compile() {
     $LLVM_PATH/llc -filetype=obj $prf_name -o $obj_name ;	
     
     # Compile everything now, producing a final executable file:
-    echo "  $LLVM_PATH/$COMPILER++ -lm $obj_name -o $exe_name $App_Link_Flags"
-    $LLVM_PATH/$COMPILER++ -lm $obj_name -o $exe_name $App_Link_Flags;
+    echo "  $LLVM_PATH/$COMPILER -lm $obj_name -o $exe_name $App_Link_Flags"
+    $LLVM_PATH/$COMPILER -lm $obj_name -o $exe_name $App_Link_Flags;
+    #$LLVM_PATH/$COMPILER++ -lm $obj_name -o $exe_name $App_Link_Flags;
     #$g++ -lm $obj_name -o $exe_name $App_Link_Flags;
 
     #Since LD_LIBRARY_PATH does not trick for applicatoins to find for enclave.{signed}.so files, we create links for those libraries which include trusted functions to be instrumented
